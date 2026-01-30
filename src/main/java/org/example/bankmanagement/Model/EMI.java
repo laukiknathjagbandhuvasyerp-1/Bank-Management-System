@@ -1,7 +1,10 @@
 package org.example.bankmanagement.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -13,10 +16,11 @@ public class EMI {
     private long emiId;
 
     private double emiAmount;
-    private int emiMonths;
-    private float emiRate;
+    private LocalDate emiDueDate;
+    private boolean isPaid;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="loan_id",referencedColumnName = "loanId")
+    @JsonIgnore
     private Loan loan;
 }

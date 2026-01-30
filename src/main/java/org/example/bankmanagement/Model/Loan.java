@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 public class Loan {
@@ -14,14 +17,17 @@ public class Loan {
 
     private long loanAmount;
     private float loanRate;
+    @Column(name = "loan_tenure")
+    private Integer loanTenure;
 
     @ManyToOne
     @JoinColumn(name="cust_id",referencedColumnName = "custId")
     @JsonIgnore
     private Customer customer;
 
-    @OneToOne(mappedBy = "loan" , cascade = CascadeType.ALL)
-    private EMI emi;
+
+    @OneToMany(mappedBy = "loan" , cascade = CascadeType.ALL)
+    private List<EMI> emi = new ArrayList<>();
 
 
 

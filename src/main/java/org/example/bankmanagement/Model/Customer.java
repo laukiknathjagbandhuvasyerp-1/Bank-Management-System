@@ -20,8 +20,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer" , cascade = CascadeType.ALL)
     private List<Account> accounts;
 
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
 
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Loan> loans;
 
 }
