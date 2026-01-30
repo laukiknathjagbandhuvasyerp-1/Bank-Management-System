@@ -1,5 +1,6 @@
 package org.example.bankmanagement.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,5 +19,9 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer" , cascade = CascadeType.ALL)
     private List<Account> accounts;
+
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+
+    private List<Loan> loans;
 
 }
