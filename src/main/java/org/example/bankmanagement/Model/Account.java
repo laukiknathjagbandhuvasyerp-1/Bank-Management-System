@@ -16,6 +16,8 @@ public class Account {
     private Long accNo;
     private Date accOpenDate;
     private String accType;
+    @Column
+    private double accBalance;
 
     @ManyToOne
     @JoinColumn(name ="cust_id",referencedColumnName = "custId")

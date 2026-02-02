@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EMIRepo extends JpaRepository<EMI,Long> {
     List<EMI> findByLoanLoanId(Long loanId);
+    List<EMI> findByLoanCustomerCustId(long custId);
+
 }

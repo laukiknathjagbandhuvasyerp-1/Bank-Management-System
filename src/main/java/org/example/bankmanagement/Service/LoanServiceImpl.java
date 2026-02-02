@@ -26,6 +26,9 @@ public class LoanServiceImpl implements LoanService{
     @Autowired
     private CustomerRepo customerRepo;
 
+    @Autowired
+    private EMIService emiService;
+
     @Override
     public void removeLoanByLoanId(long loanId) {
         loanRepo.deleteById(loanId);
@@ -47,7 +50,7 @@ public class LoanServiceImpl implements LoanService{
 
         Loan saveloan =loanRepo.save(loan);
 
-        generateEmi(saveloan);
+        emiService.genearateEmi(loan);
 
         return loanRepo.save(saveloan);
     }
@@ -58,27 +61,5 @@ public class LoanServiceImpl implements LoanService{
         return customer.getLoans();
     }
 
-    private void generateEmi(Loan loan){
-
-        double P =loan.getLoanAmount();
-        double annualRate = loan.getLoanRate();
-        int n = loan.getLoanTenure();
-
-        double R =  annualRate/12/100;
-        double emiAmount = (P*R*Math.pow(1+R,n))  /  (Math.pow(1+R,n)-1);
-
-        List<EMI> emiList =new ArrayList<>();
-
-        for(int i=1;i<n;i++){
-            EMI emi= new EMI();
-            emi.setEmiAmount(emiAmount);
-            emi.setEmiDueDate(LocalDate.now().plusMonths(i));
-            emi.setPaid(false);
-            emi.setLoan(loan);
-            emiList.add(emi);
-        }
-
-        loan.setEmi(emiList);
-    }
 
 }

@@ -25,4 +25,5 @@ public class Customer {
     @JsonIgnore
     private List<Loan> loans;
 
+
 }

@@ -17,7 +17,8 @@ public class EMI {
 
     private double emiAmount;
     private LocalDate emiDueDate;
-    private boolean isPaid;
+    private boolean isPaid=false;
+    private LocalDate paidDare;
 
     @ManyToOne
     @JoinColumn(name="loan_id",referencedColumnName = "loanId")
