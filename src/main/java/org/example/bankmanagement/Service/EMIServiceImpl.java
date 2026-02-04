@@ -45,7 +45,6 @@ public class EMIServiceImpl implements EMIService {
             emi.setLoan(loan);
             emiList.add(emi);
         }
-
         loan.setEmi(emiList);
     }
 
@@ -57,8 +56,11 @@ public class EMIServiceImpl implements EMIService {
         Loan loan=emi.getLoan();
         Account account = loan.getCustomer().getAccounts().get(0);
 
-        if(account.getAccBalance() < emi.getEmiAmount()){
-            throw new RuntimeException("Insufficient fund");
+        double emiAmount=emi.getEmiAmount();
+        double accBalance=account.getAccBalance();
+
+        if(accBalance - emiAmount < 2000){
+            throw new RuntimeException("Insufficient balance as account balance must be 2000");
         }
 
         account.setAccBalance(account.getAccBalance()-emi.getEmiAmount());

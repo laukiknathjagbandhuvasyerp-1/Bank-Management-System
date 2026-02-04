@@ -5,6 +5,7 @@ import org.example.bankmanagement.Model.Loan;
 import org.example.bankmanagement.Service.EMIService;
 import org.example.bankmanagement.Service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +26,8 @@ class LoanController {
     }
 
     @PostMapping("/details/{custId}")
-    public List<Loan> getLoanDetailsByCustId(@PathVariable long custId){
-        return loanService.getLoanDetailsofCustomer(custId);
+    public Page<Loan> getLoanDetailsByCustId(@PathVariable long custId, @RequestParam int page){
+        return loanService.getLoanDetailsofCustomerByCustomerId(custId,page);
     }
 
     @PostMapping("/loandetails/{loanId}")

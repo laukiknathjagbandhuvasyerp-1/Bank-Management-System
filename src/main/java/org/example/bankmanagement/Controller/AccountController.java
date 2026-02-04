@@ -3,6 +3,7 @@ package org.example.bankmanagement.Controller;
 import org.example.bankmanagement.Model.Account;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Service.AccountService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,8 @@ class AccountController {
     }
 
     @PostMapping("/customer/view/{custId}")
-    public List<Account> getAccountsDetailByCustomerId(@PathVariable long custId){
-        return accountService.getAccountByCustomerId(custId);
+    public Page<Account> getAccountsDetailByCustomerId(@PathVariable long custId, @RequestParam int page){
+        return accountService.getAccountByCustomerId(custId,page);
     }
 
 

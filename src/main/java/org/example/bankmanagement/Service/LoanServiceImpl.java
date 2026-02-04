@@ -7,6 +7,9 @@ import org.example.bankmanagement.Repo.AccountRepo;
 import org.example.bankmanagement.Repo.CustomerRepo;
 import org.example.bankmanagement.Repo.LoanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,9 +22,6 @@ public class LoanServiceImpl implements LoanService{
 
     @Autowired
     private LoanRepo loanRepo;
-
-    @Autowired
-    private AccountRepo accountRepo;
 
     @Autowired
     private CustomerRepo customerRepo;
@@ -56,9 +56,10 @@ public class LoanServiceImpl implements LoanService{
     }
 
     @Override
-    public List<Loan> getLoanDetailsofCustomer(long custId) {
-        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("customer not found"));
-        return customer.getLoans();
+    public Page<Loan> getLoanDetailsofCustomerByCustomerId(long custId,int page) {
+        int pageIndex = page- 1;
+        Pageable pageable = PageRequest.of(pageIndex,10);
+        return loanRepo.findByCustomerCustId(custId,pageable);
     }
 
 

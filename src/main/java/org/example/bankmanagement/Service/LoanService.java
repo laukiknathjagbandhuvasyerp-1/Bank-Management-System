@@ -1,6 +1,7 @@
 package org.example.bankmanagement.Service;
 
 import org.example.bankmanagement.Model.Loan;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface LoanService {
 
     Loan createLoan(long custId,Loan loan);
 
-   List<Loan> getLoanDetailsofCustomer(long custId);
+   Page<Loan> getLoanDetailsofCustomerByCustomerId(long custId,int page);
 
    Loan getLoanByLoanId(long loanId);
 

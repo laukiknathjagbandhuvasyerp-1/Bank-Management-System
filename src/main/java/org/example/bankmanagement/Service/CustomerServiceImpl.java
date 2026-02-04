@@ -3,6 +3,10 @@ package org.example.bankmanagement.Service;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +26,10 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<Customer> getCustomerList(Customer customer) {
-        List<Customer> customerList = customerRepo.findAll();
-        return customerList;
+    public Page<Customer> getAllCustomers(int page){
+        int pageIndex=page-1;
+        Pageable pageable = PageRequest.of(pageIndex,10, Sort.by("custId").ascending());
+        return customerRepo.findAll(pageable);
     }
 
     @Override
