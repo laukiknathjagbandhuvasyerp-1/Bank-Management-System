@@ -1,5 +1,8 @@
 package org.example.bankmanagement.Controller;
 
+import org.example.bankmanagement.DTO.CustomerRequestDTO;
+import org.example.bankmanagement.DTO.CustomerResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Service.CustomerService;
 import org.springframework.data.domain.Page;
@@ -18,8 +21,9 @@ class CustomerController {
     }
 
     @PostMapping("/add")
-    public List<Customer> createNewCustomer(@RequestBody  List<Customer> customer){
-        return customerService.addNewCustomer(customer);
+    public List<CustomerResponseDTO> createNewCustomer(
+            @RequestBody  List<CustomerRequestDTO> customerRequestDTO){
+        return customerService.addNewCustomer(customerRequestDTO);
     }
 
     @PostMapping("/delete/{custId}")
@@ -28,12 +32,13 @@ class CustomerController {
     }
 
     @PostMapping("/update/{custId}")
-    public Customer updateCustomerDetailsById(@PathVariable  long custId , @RequestBody  Customer customer){
-        return customerService.updateCustomer(custId,customer);
+    public CustomerResponseDTO updateCustomerDetailsById(@PathVariable  long custId ,
+                                                         @RequestBody  CustomerRequestDTO customerRequestDTO){
+        return customerService.updateCustomer(custId,customerRequestDTO);
     }
 
-    @PostMapping("/view")
-    public Page<Customer> getCustomer( @RequestParam(defaultValue = "0") int page){
+    @GetMapping("/view")
+    public PageResponseDTO<CustomerResponseDTO> getCustomer(@RequestParam(defaultValue = "1") int page){
         return customerService.getAllCustomers(page);
     }
 

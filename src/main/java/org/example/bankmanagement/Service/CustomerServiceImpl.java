@@ -1,5 +1,9 @@
 package org.example.bankmanagement.Service;
 
+import org.example.bankmanagement.DTO.CustomerRequestDTO;
+import org.example.bankmanagement.DTO.CustomerResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
+import org.example.bankmanagement.Mapper.PageResponseMapper;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +20,71 @@ public class CustomerServiceImpl implements CustomerService{
 
     private final CustomerRepo customerRepo;
 
+    private static final int pageSize=10;
+
     public CustomerServiceImpl(CustomerRepo customerRepo){
         this.customerRepo=customerRepo;
     }
 
     @Override
-    public List<Customer> addNewCustomer(List<Customer> customer) {
-        return customerRepo.saveAll(customer);
+    public List<CustomerResponseDTO> addNewCustomer(List<CustomerRequestDTO> customerRequestDTO) {
+
+        List<Customer> customers = customerRequestDTO.stream().map(dto -> {
+            Customer c =new Customer();
+            c.setCustName(dto.getCustName());
+            c.setCustAdd(dto.getCustAdd());
+            return c;
+        }).toList();
+
+        List<Customer> savedCustomer = customerRepo.saveAll(customers);
+
+        return savedCustomer.stream().map(customer -> {
+            CustomerResponseDTO responseDTO = new CustomerResponseDTO();
+            responseDTO.setCustId(customer.getCustId());
+            responseDTO.setCustName(customer.getCustName());
+            responseDTO.setCustAdd(customer.getCustAdd());
+            return responseDTO;
+        }).toList();
     }
 
     @Override
-    public Page<Customer> getAllCustomers(int page){
+    public PageResponseDTO<CustomerResponseDTO> getAllCustomers(int page){
         int pageIndex=page-1;
-        Pageable pageable = PageRequest.of(pageIndex,10, Sort.by("custId").ascending());
-        return customerRepo.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageIndex,pageSize, Sort.by("custId").ascending());
+
+        Page<Customer> customerPage= customerRepo.findAll(pageable);
+
+            return PageResponseMapper.mapPage(customerPage,c ->{
+                 CustomerResponseDTO dto = new CustomerResponseDTO();
+                 dto.setCustId(c.getCustId());
+                 dto.setCustName(c.getCustName());
+                 dto.setCustAdd(c.getCustAdd());
+                 return dto;
+                }
+            );
     }
 
     @Override
     public void deleteCustomer(long custId) {
-        customerRepo.deleteById(custId);
+        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("Id not found"));
+        customerRepo.delete(customer);
     }
 
         @Override
-        public Customer updateCustomer(long custId,Customer customer) {
-            Customer updatedCustomer = customerRepo.findById(custId).orElseThrow(()->
+        public CustomerResponseDTO updateCustomer(long custId,CustomerRequestDTO customerRequestDTO) {
+            Customer customer = customerRepo.findById(custId).orElseThrow(()->
                     new RuntimeException("Customer Id not found"));
-                updatedCustomer.setCustName(customer.getCustName());
-                updatedCustomer.setCustAdd(customer.getCustAdd());
-            return  customerRepo.save(updatedCustomer);
 
+            customer.setCustName(customerRequestDTO.getCustName());
+            customer.setCustAdd(customerRequestDTO.getCustAdd());
+
+            Customer updatedCustomer =  customerRepo.save(customer);
+
+            CustomerResponseDTO customerResponse = new CustomerResponseDTO();
+            customerResponse.setCustId(updatedCustomer.getCustId());
+            customerResponse.setCustName(updatedCustomer.getCustName());
+            customerResponse.setCustAdd(updatedCustomer.getCustAdd());
+
+            return customerResponse;
         }
 }

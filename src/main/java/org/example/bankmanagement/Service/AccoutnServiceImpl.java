@@ -1,5 +1,8 @@
 package org.example.bankmanagement.Service;
 
+import org.example.bankmanagement.DTO.AccountResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
+import org.example.bankmanagement.Mapper.PageResponseMapper;
 import org.example.bankmanagement.Model.Account;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Repo.AccountRepo;
@@ -16,6 +19,8 @@ import java.util.List;
 @Service
 
 public class AccoutnServiceImpl implements  AccountService {
+
+    private static final int PAGE_SIZE=10;
 
     @Autowired
     private CustomerRepo customerRepo;
@@ -34,10 +39,18 @@ public class AccoutnServiceImpl implements  AccountService {
     }
 
     @Override
-    public Page<Account> getAccountByCustomerId(long custId,int page) {
+    public PageResponseDTO<AccountResponseDTO> getAccountByCustomerId(long custId, int page) {
         int pageIndex =page-1;
-        Pageable pageable = PageRequest.of(pageIndex,10);
-        return accountRepo.findByCustomerCustId(custId,pageable);
+        Pageable pageable = PageRequest.of(pageIndex,PAGE_SIZE);
+        Page<Account> accountPage =accountRepo.findByCustomerCustId(custId,pageable);
+
+        return PageResponseMapper.mapPage(accountPage,a->{
+            AccountResponseDTO response = new AccountResponseDTO();
+            response.setAccBalance(a.getAccBalance());
+            response.setAccNo(a.getAccNo());
+            response.setAccType(a.getAccType());
+            return response;
+        });
     }
 
 }

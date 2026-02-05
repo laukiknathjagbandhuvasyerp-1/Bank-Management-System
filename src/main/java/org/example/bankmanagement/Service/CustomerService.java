@@ -1,5 +1,8 @@
 package org.example.bankmanagement.Service;
 
+import org.example.bankmanagement.DTO.CustomerRequestDTO;
+import org.example.bankmanagement.DTO.CustomerResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.Customer;
 import org.springframework.data.domain.Page;
 
@@ -7,11 +10,11 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<Customer> addNewCustomer(List<Customer> customer);
+    List<CustomerResponseDTO> addNewCustomer(List<CustomerRequestDTO> customerRequestDTO);
 
     void deleteCustomer(long custId);
 
-    Customer updateCustomer(long custId,Customer customer);
+    CustomerResponseDTO updateCustomer(long custId,CustomerRequestDTO customerRequestDTO);
 
-    Page<Customer> getAllCustomers(int page);
+    PageResponseDTO<CustomerResponseDTO> getAllCustomers(int page);
 }

@@ -1,5 +1,7 @@
 package org.example.bankmanagement.Controller;
 
+import org.example.bankmanagement.DTO.AccountResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.Account;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Service.AccountService;
@@ -23,8 +25,9 @@ class AccountController {
         return accountService.createAccount(custId,account);
     }
 
-    @PostMapping("/customer/view/{custId}")
-    public Page<Account> getAccountsDetailByCustomerId(@PathVariable long custId, @RequestParam int page){
+    @GetMapping("/customer/view/{custId}")
+    public PageResponseDTO<AccountResponseDTO> getAccountsDetailByCustomerId(@PathVariable long custId,
+                                                                             @RequestParam int page){
         return accountService.getAccountByCustomerId(custId,page);
     }
 

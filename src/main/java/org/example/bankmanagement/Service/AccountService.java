@@ -1,5 +1,7 @@
 package org.example.bankmanagement.Service;
 
+import org.example.bankmanagement.DTO.AccountResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.Account;
 import org.example.bankmanagement.Model.Customer;
 import org.springframework.data.domain.Page;
@@ -10,5 +12,5 @@ public interface AccountService {
 
     Account createAccount(long custId,Account account);
 
-    Page<Account> getAccountByCustomerId(long accNo,int page);
+    PageResponseDTO<AccountResponseDTO> getAccountByCustomerId(long accNo, int page);
 }
