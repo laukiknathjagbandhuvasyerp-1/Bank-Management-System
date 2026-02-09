@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<CustomerResponseDTO> addNewCustomer(List<CustomerRequestDTO> customerRequestDTO);
+    CustomerResponseDTO addNewCustomer(CustomerRequestDTO customerRequestDTO);
 
     void deleteCustomer(long custId);
 

@@ -1,16 +1,13 @@
-package org.example.bankmanagement.Controller;
+package org.example.bankmanagement.controller;
 
 import org.example.bankmanagement.DTO.EMIResponseDTO;
 import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.EMI;
 import org.example.bankmanagement.Model.Loan;
 import org.example.bankmanagement.Service.EMIService;
 import org.example.bankmanagement.Service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/loan")

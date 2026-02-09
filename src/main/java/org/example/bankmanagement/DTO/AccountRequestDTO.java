@@ -2,7 +2,7 @@ package org.example.bankmanagement.DTO;
 
 import jakarta.annotation.Nonnull;
 import lombok.Data;
-import org.hibernate.annotations.processing.Pattern;
+
 
 import java.util.Date;
 

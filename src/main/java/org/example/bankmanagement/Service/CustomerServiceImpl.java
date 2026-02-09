@@ -27,24 +27,20 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<CustomerResponseDTO> addNewCustomer(List<CustomerRequestDTO> customerRequestDTO) {
+    public CustomerResponseDTO addNewCustomer(CustomerRequestDTO customerRequestDTO) {
 
-        List<Customer> customers = customerRequestDTO.stream().map(dto -> {
             Customer c =new Customer();
-            c.setCustName(dto.getCustName());
-            c.setCustAdd(dto.getCustAdd());
-            return c;
-        }).toList();
+            c.setCustName(customerRequestDTO.getCustName());
+            c.setCustAdd(customerRequestDTO.getCustAdd());
 
-        List<Customer> savedCustomer = customerRepo.saveAll(customers);
+            Customer savedCustomer = customerRepo.save(c);
 
-        return savedCustomer.stream().map(customer -> {
             CustomerResponseDTO responseDTO = new CustomerResponseDTO();
-            responseDTO.setCustId(customer.getCustId());
-            responseDTO.setCustName(customer.getCustName());
-            responseDTO.setCustAdd(customer.getCustAdd());
+            responseDTO.setCustId(savedCustomer.getCustId());
+            responseDTO.setCustName(savedCustomer.getCustName());
+            responseDTO.setCustAdd(savedCustomer.getCustAdd());
             return responseDTO;
-        }).toList();
+
     }
 
     @Override

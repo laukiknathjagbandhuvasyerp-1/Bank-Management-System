@@ -1,16 +1,15 @@
-package org.example.bankmanagement.Controller;
+package org.example.bankmanagement.controller;
 
 import org.example.bankmanagement.DTO.CustomerRequestDTO;
 import org.example.bankmanagement.DTO.CustomerResponseDTO;
 import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Service.CustomerService;
-import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/customer")
 class CustomerController {
 
@@ -21,9 +20,9 @@ class CustomerController {
     }
 
     @PostMapping("/add")
-    public List<CustomerResponseDTO> createNewCustomer(
-            @RequestBody  List<CustomerRequestDTO> customerRequestDTO){
-        return customerService.addNewCustomer(customerRequestDTO);
+    public String createNewCustomer(@ModelAttribute  CustomerRequestDTO customerRequestDTO){
+        customerService.addNewCustomer(customerRequestDTO);
+        return "addCustomer";
     }
 
     @PostMapping("/delete/{custId}")

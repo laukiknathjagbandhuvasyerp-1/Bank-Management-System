@@ -1,14 +1,10 @@
-package org.example.bankmanagement.Controller;
+package org.example.bankmanagement.controller;
 
 import org.example.bankmanagement.DTO.AccountResponseDTO;
 import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.Account;
-import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Service.AccountService;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/account")
