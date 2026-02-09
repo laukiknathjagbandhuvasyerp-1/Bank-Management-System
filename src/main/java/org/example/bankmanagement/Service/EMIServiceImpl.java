@@ -26,7 +26,7 @@ public class EMIServiceImpl implements EMIService {
     }
 
     @Override
-    public void genearateEmi(Loan loan) {
+    public void generateEmi(Loan loan) {
 
         double P = loan.getLoanAmount();
         double annualRate = loan.getLoanRate();

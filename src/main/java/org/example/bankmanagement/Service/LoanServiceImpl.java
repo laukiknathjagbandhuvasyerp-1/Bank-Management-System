@@ -50,7 +50,7 @@ public class LoanServiceImpl implements LoanService{
 
         Loan saveloan =loanRepo.save(loan);
 
-        emiService.genearateEmi(loan);
+        emiService.generateEmi(loan);
 
         return loanRepo.save(saveloan);
     }

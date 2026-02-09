@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EMIService {
 
-    void genearateEmi(Loan loan);
+    void generateEmi(Loan loan);
 
     String payEmi(long emiId);
 
