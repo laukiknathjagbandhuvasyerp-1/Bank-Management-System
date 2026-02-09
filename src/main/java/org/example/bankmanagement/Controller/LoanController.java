@@ -1,5 +1,7 @@
 package org.example.bankmanagement.Controller;
 
+import org.example.bankmanagement.DTO.EMIResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.EMI;
 import org.example.bankmanagement.Model.Loan;
 import org.example.bankmanagement.Service.EMIService;
@@ -40,14 +42,16 @@ class LoanController {
         loanService.removeLoanByLoanId(loanId);
     }
 
-    @PostMapping("/emi/loanid/{loanId}")
-    public List<EMI> getAllEmiByLoanId(@PathVariable long loanId){
-        return emiService.getAllEmiByLoanId(loanId);
+    @GetMapping("/emi/loan/{loanId}")
+    public PageResponseDTO<EMIResponseDTO> getAllEmiByLoanId(@PathVariable long loanId,
+                                                             @RequestParam int page){
+        return emiService.getAllEmiByLoanId(loanId,page);
     }
 
-    @PostMapping("/emi/custmoerid/{custId}")
-    public List<EMI> getAllEmiByCustId(@PathVariable long custId){
-        return emiService.getAllEmiByCustId(custId);
+    @GetMapping("/emi/customer/{custId}")
+    public PageResponseDTO<EMIResponseDTO> getAllEmiByCustId(@PathVariable long custId,
+                                                             @RequestParam int page){
+        return emiService.getAllEmiByCustId(custId,page);
     }
 
     @PostMapping("/emi/pay/{emiId}")

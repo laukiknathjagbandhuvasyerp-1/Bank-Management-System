@@ -1,5 +1,7 @@
 package org.example.bankmanagement.Service;
 
+import org.example.bankmanagement.DTO.EMIResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Model.EMI;
 import org.example.bankmanagement.Model.Loan;
 
@@ -11,11 +13,8 @@ public interface EMIService {
 
     String payEmi(long emiId);
 
-    List<EMI> getAllEmiByLoanId(long loanId);
+    PageResponseDTO<EMIResponseDTO> getAllEmiByLoanId(long loanId,int page);
 
-    List<EMI> getAllEmiByCustId(long custId);
-
-
-
+    PageResponseDTO<EMIResponseDTO> getAllEmiByCustId(long custId,int page);
 
 }

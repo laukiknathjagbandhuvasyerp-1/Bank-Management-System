@@ -1,11 +1,18 @@
 package org.example.bankmanagement.Service;
 
+import org.example.bankmanagement.DTO.EMIResponseDTO;
+import org.example.bankmanagement.DTO.PageResponseDTO;
+import org.example.bankmanagement.Mapper.PageResponseMapper;
 import org.example.bankmanagement.Model.Account;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Model.EMI;
 import org.example.bankmanagement.Model.Loan;
 import org.example.bankmanagement.Repo.AccountRepo;
 import org.example.bankmanagement.Repo.EMIRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +24,7 @@ import java.util.List;
 
 public class EMIServiceImpl implements EMIService {
 
+        private static final int PAGE_SIZE=10;
     private final EMIRepo eMIRepo;
     private final AccountRepo accountRepo;
 
@@ -75,13 +83,40 @@ public class EMIServiceImpl implements EMIService {
     }
 
     @Override
-    public List<EMI> getAllEmiByLoanId(long loanId) {
-        return eMIRepo.findByLoanLoanId(loanId);
+    public PageResponseDTO<EMIResponseDTO> getAllEmiByLoanId(long loanId,int page) {
+
+        int page_index = page  - 1;
+        Pageable pageable = PageRequest.of(page_index,PAGE_SIZE, Sort.by("emiDueDate").ascending());
+        Page<EMI> emiPage = eMIRepo.findByLoanLoanId(loanId,pageable);
+
+        return PageResponseMapper.mapPage(emiPage,e->{
+            EMIResponseDTO response = new EMIResponseDTO();
+            response.setEmiId(e.getEmiId());
+            response.setEmiAmount(e.getEmiAmount());
+            response.setEmiDueDate(e.getEmiDueDate());
+            response.setPaid(e.isPaid());
+            response.setEmiPaidDate(e.getPaidDare());
+
+            return response;
+        });
     }
 
     @Override
-    public List<EMI> getAllEmiByCustId(long custId){
-        return eMIRepo.findByLoanCustomerCustId(custId);
+    public PageResponseDTO<EMIResponseDTO> getAllEmiByCustId(long custId,int page){
+        int pageIndex =page - 1;
+        Pageable pageable = PageRequest.of(pageIndex,PAGE_SIZE,Sort.by("emiDueDate").ascending());
+        Page<EMI> emiPage = eMIRepo.findByLoanCustomerCustId(custId,pageable);
+
+        return PageResponseMapper.mapPage(emiPage,e->{
+            EMIResponseDTO response =new EMIResponseDTO();
+            response.setEmiId(e.getEmiId());
+            response.setEmiAmount(e.getEmiAmount());
+            response.setEmiDueDate(e.getEmiDueDate());
+            response.setPaid(e.isPaid());
+            response.setEmiPaidDate(e.getPaidDare());
+
+            return response;
+        });
     }
 
 }
