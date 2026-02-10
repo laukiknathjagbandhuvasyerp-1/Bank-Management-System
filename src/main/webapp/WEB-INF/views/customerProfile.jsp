@@ -77,23 +77,21 @@
     </div>
 
     <div class="row">
-        <div class="label">Email</div>
-        <div class="value">${customer.email}</div>
-    </div>
-
-    <div class="row">
-        <div class="label">Mobile</div>
-        <div class="value">${customer.mobile}</div>
-    </div>
-
-    <div class="row">
         <div class="label">Address</div>
         <div class="value">${customer.custAdd}</div>
     </div>
 
     <div class="actions">
-        <a href="/accounts/open/${customer.custId}" class="btn btn-account">Open Account</a>
-        <a href="/loans/apply/${customer.custId}" class="btn btn-loan">Apply Loan</a>
+         <form action="/customer/delete/${customer.custId}" method="post">
+         <button type="submit" class="btn btn-back">Delete Customer </button>
+         </form>
+         <form action="/customer/edit/${customer.custId}" method="get">
+                 <button type="submit" class="btn btn-loan">
+                     Update Customer
+                 </button>
+             </form>
+        <a href="" class="btn btn-account">Open Account</a>
+        <a href="" class="btn btn-loan">Apply Loan</a>
         <a href="/" class="btn btn-back">Back</a>
     </div>
 </div>

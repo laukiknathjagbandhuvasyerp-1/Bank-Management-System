@@ -58,11 +58,11 @@
     <h1>Bank Management System</h1>
     <p>Manage Customers, Accounts & Loans Easily</p>
 
-    <form method="post" action="/customer/add">
+    <form method="get" action="/customer/new">
         <button type="submit" class="btn">I am a New Customer</button>
     </form>
 
-    <form method="get" action="${pageContext.request.contextPath}/customer/view">
+    <form method="get" action="/customer/view">
         <button type="submit" class="btn secondary">I am an Existing Customer</button>
     </form>
 

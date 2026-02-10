@@ -14,7 +14,9 @@ public interface CustomerService {
 
     void deleteCustomer(long custId);
 
-    CustomerResponseDTO updateCustomer(long custId,CustomerRequestDTO customerRequestDTO);
+    void updateCustomer(long custId,CustomerRequestDTO customerRequestDTO);
 
     PageResponseDTO<CustomerResponseDTO> getAllCustomers(int page);
+
+    CustomerResponseDTO findCustomerById(long custId);
 }

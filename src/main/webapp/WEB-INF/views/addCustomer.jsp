@@ -100,19 +100,19 @@
     <form action="/customer/add" method="post">
         <div class="form-group">
             <label>Customer Name</label>
-            <input type="text" placeholder="Enter customer name" name="custName">
+            <input type="text" placeholder="Enter customer name" name="custName" required>
         </div>
 
         <div class="form-group">
             <label>Address</label>
-            <input type="text" placeholder="Enter customer address" name="custAdd">
+            <input type="text" placeholder="Enter customer address" name="custAdd" required>
         </div>
 
         <button class="btn">Create Customer</button>
     </form>
 
     <div class="back-link">
-        <a href="/">← Back to Landing Page</a>
+        <a href="/">← Back to Home Page</a>
     </div>
 </div>
 

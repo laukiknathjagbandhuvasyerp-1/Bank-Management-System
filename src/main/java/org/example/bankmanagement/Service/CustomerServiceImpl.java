@@ -67,20 +67,26 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
         @Override
-        public CustomerResponseDTO updateCustomer(long custId,CustomerRequestDTO customerRequestDTO) {
+        public void updateCustomer(long custId,CustomerRequestDTO customerRequestDTO) {
+
             Customer customer = customerRepo.findById(custId).orElseThrow(()->
                     new RuntimeException("Customer Id not found"));
 
             customer.setCustName(customerRequestDTO.getCustName());
             customer.setCustAdd(customerRequestDTO.getCustAdd());
 
-            Customer updatedCustomer =  customerRepo.save(customer);
-
-            CustomerResponseDTO customerResponse = new CustomerResponseDTO();
-            customerResponse.setCustId(updatedCustomer.getCustId());
-            customerResponse.setCustName(updatedCustomer.getCustName());
-            customerResponse.setCustAdd(updatedCustomer.getCustAdd());
-
-            return customerResponse;
+            customerRepo.save(customer);
         }
+
+    @Override
+    public CustomerResponseDTO findCustomerById(long custId) {
+        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("not found"));
+
+        CustomerResponseDTO customerResponseDTO= new CustomerResponseDTO();
+        customerResponseDTO.setCustId(customer.getCustId());
+        customerResponseDTO.setCustName(customer.getCustName());
+        customerResponseDTO.setCustAdd(customer.getCustAdd());
+
+        return customerResponseDTO;
+    }
 }
