@@ -45,6 +45,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public PageResponseDTO<CustomerResponseDTO> getAllCustomers(int page){
+        if(page<1){
+            page=1;
+        }
         int pageIndex=page-1;
         Pageable pageable = PageRequest.of(pageIndex,pageSize, Sort.by("custId").ascending());
 
@@ -66,17 +69,17 @@ public class CustomerServiceImpl implements CustomerService{
         customerRepo.delete(customer);
     }
 
-        @Override
-        public void updateCustomer(long custId,CustomerRequestDTO customerRequestDTO) {
+    @Override
+    public void updateCustomer(long custId,CustomerRequestDTO customerRequestDTO) {
 
-            Customer customer = customerRepo.findById(custId).orElseThrow(()->
-                    new RuntimeException("Customer Id not found"));
+        Customer customer = customerRepo.findById(custId).orElseThrow(()->
+        new RuntimeException("Customer Id not found"));
 
-            customer.setCustName(customerRequestDTO.getCustName());
-            customer.setCustAdd(customerRequestDTO.getCustAdd());
+        customer.setCustName(customerRequestDTO.getCustName());
+        customer.setCustAdd(customerRequestDTO.getCustAdd());
 
-            customerRepo.save(customer);
-        }
+        customerRepo.save(customer);
+    }
 
     @Override
     public CustomerResponseDTO findCustomerById(long custId) {

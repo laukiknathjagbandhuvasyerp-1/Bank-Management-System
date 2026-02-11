@@ -3,13 +3,14 @@ package org.example.bankmanagement.controller;
 import org.example.bankmanagement.DTO.CustomerRequestDTO;
 import org.example.bankmanagement.DTO.CustomerResponseDTO;
 import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/customer")
@@ -47,9 +48,23 @@ class CustomerController {
         List<CustomerResponseDTO> customerResponseDTOList = response.getContent();
         model.addAttribute("customerList",customerResponseDTOList);
         model.addAttribute("currentPage",response.getPage());
-        model.addAttribute("totalPage",response.getTotalPages());
+        model.addAttribute("totalPages",response.getTotalPages());
+        model.addAttribute("size",response.getSize());
 
         return "customerList";
+    }
+
+    @GetMapping("/ajax/view")
+    @ResponseBody
+    public Map<String,Object> viewCustomerAjax(@RequestParam(defaultValue = "1") int page){
+        PageResponseDTO<CustomerResponseDTO> response = customerService.getAllCustomers(page);
+
+        Map<String,Object> objectMap = new HashMap<>();
+        objectMap.put("customers",response.getContent());
+        objectMap.put("currentPage",page);
+        objectMap.put("totalPages",response.getTotalPages());
+
+        return objectMap;
     }
 
     @GetMapping("/profile/{custId}")
