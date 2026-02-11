@@ -42,15 +42,7 @@ class CustomerController {
     }
 
     @GetMapping("/view")
-    public String getCustomer(@RequestParam(defaultValue = "1") int page, Model model){
-        PageResponseDTO<CustomerResponseDTO> response = customerService.getAllCustomers(page);
-
-        List<CustomerResponseDTO> customerResponseDTOList = response.getContent();
-        model.addAttribute("customerList",customerResponseDTOList);
-        model.addAttribute("currentPage",response.getPage());
-        model.addAttribute("totalPages",response.getTotalPages());
-        model.addAttribute("size",response.getSize());
-
+    public String getCustomer(){
         return "customerList";
     }
 

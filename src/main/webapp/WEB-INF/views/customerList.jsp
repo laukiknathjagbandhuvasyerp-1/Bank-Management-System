@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page isELIgnored="true" %>
 
 <!DOCTYPE html>
 <html>
@@ -44,13 +45,18 @@
             margin-top: 20px;
             text-align: center;
         }
-        .pagination a {
+        .pagination button {
             margin: 0 5px;
             padding: 6px 12px;
             background: #007bff;
             color: white;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
+        }
+        .pagination span {
+            margin: 0 10px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -60,7 +66,7 @@
 <div class="container">
     <h2>Existing Customers</h2>
 
-    <table id ="customerTable">
+    <table>
         <thead>
         <tr>
             <th>ID</th>
@@ -69,106 +75,70 @@
             <th>Action</th>
         </tr>
         </thead>
-
-        <tbody id="customerTableBody">
-            <!-- AJAX WILL FILL DATA -->
-        </tbody>
+        <tbody id="customerTable"></tbody>
     </table>
 
-    <div class="pagination" id="pagination">
-        <!-- AJAX WILL FILL PAGINATION -->
+    <div class="pagination">
+        <button onclick="loadPage(currentPage - 1)">Previous</button>
+        <span id="pageInfo"></span>
+        <button onclick="loadPage(currentPage + 1)">Next</button>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    /* ==========================
-       DOCUMENT READY
-    ========================== */
-    $(document).ready(function () {
-        loadPage(1);   // initial load
+    let currentPage = 1;
+    let totalPages = 1;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        loadPage(1);
     });
 
-    /* ==========================
-       AJAX CALL
-    ========================== */
     function loadPage(page) {
-        $.ajax({
-            url: "/customer/ajax/view",
-            type: "GET",
-            data: { page: page },
-            dataType: "json",
-            success: function (data) {
-                populateTable("#customerTable", data.customers);
-                populatePagination(data.currentPage, data.totalPages);
-            },
-            error: function () {
-                console.error("Failed to fetch customers");
-            }
-        });
-    }
 
-    /* ==========================
-       TABLE POPULATION
-       (NO STRING APPEND)
-    ========================== */
-    function populateTable(tableId, customers) {
-        const $tbody = $(tableId + " tbody");
-        $tbody.empty();
+        if (page < 1 || page > totalPages) return;
 
-        $.each(customers, function (index, customer) {
+        fetch(`/customer/ajax/view?page=${page}`)
+            .then(res => {
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                return res.json();
+            })
+            .then(data => {
 
-            const $tr = $("<tr>");
+                console.log("AJAX DATA:", data);
 
-            $("<td>").text(customer.custId).appendTo($tr);
-            $("<td>").text(customer.custName).appendTo($tr);
-            $("<td>").text(customer.custAdd).appendTo($tr);
+                currentPage = data.currentPage;
+                totalPages = data.totalPages;
 
-            const $actionTd = $("<td>");
-            $("<a>")
-                .attr("href", "/customer/profile/" + customer.custId)
-                .addClass("btn")
-                .text("View")
-                .appendTo($actionTd);
+                const tbody = document.getElementById("customerTable");
+                tbody.innerHTML = "";
 
-            $actionTd.appendTo($tr);
+                if (data.customers.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='4'>No customers</td></tr>";
+                    return;
+                }
 
-            $tbody.append($tr);
-        });
-    }
+                data.customers.forEach(c => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${c.custId}</td>
+                            <td>${c.custName}</td>
+                            <td>${c.custAdd}</td>
+                            <td>
+                                <a href="/customer/profile/${c.custId}" class="btn">View</a>
+                            </td>
+                        </tr>
+                    `;
+                });
 
-    /* ==========================
-       PAGINATION
-    ========================== */
-    function populatePagination(currentPage, totalPages) {
-        const $pagination = $("#pagination");
-        $pagination.empty();
-
-        if (currentPage > 1) {
-            $("<a>")
-                .text("Previous")
-                .on("click", function () {
-                    loadPage(currentPage - 1);
-                })
-                .appendTo($pagination);
-        }
-
-        $("<span>")
-            .text(" Page " + currentPage + " of " + totalPages + " ")
-            .appendTo($pagination);
-
-        if (currentPage < totalPages) {
-            $("<a>")
-                .text("Next")
-                .on("click", function () {
-                    loadPage(currentPage + 1);
-                })
-                .appendTo($pagination);
-        }
+                document.getElementById("pageInfo")
+                    .innerText = `Page ${currentPage} of ${totalPages}`;
+            })
+            .catch(err => {
+                console.error("AJAX ERROR:", err);
+                alert("Failed to load customers");
+            });
     }
 </script>
-
 
 </body>
 </html>
