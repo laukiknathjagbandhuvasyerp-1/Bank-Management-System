@@ -43,7 +43,7 @@ class CustomerController {
 
     @GetMapping("/view")
     public String getCustomer(){
-        return "customerList";
+        return "CcustomerList";
     }
 
     @GetMapping("/ajax/view")
