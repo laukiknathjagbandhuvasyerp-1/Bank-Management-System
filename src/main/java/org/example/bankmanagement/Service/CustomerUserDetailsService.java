@@ -3,5 +3,8 @@ package org.example.bankmanagement.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface CustomerUserDetailsService {
-    UserDetails loadUserByUserName(String userName);
+
+    UserDetails loadUserByUsername(String userName);
+
+    void registerUser(String username,String password);
 }

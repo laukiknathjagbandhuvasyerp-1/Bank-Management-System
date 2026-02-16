@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/customer")
-class CustomerController {
+public class CustomerController {
 
     private final CustomerService customerService;
 
@@ -43,7 +43,7 @@ class CustomerController {
 
     @GetMapping("/view")
     public String getCustomer(){
-        return "CcustomerList";
+        return "customerList";
     }
 
     @GetMapping("/ajax/view")

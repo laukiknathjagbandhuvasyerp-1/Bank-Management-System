@@ -83,6 +83,9 @@
         <span id="pageInfo"></span>
         <button onclick="loadPage(currentPage + 1)">Next</button>
     </div>
+
+            <a href="/" class="btn">Back</a>
+
 </div>
 
 <script>

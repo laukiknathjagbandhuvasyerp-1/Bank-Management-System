@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "userdb")
 public class Userdb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,7 @@ public class Userdb {
     private String password;
 
     private String userRole;
-    private boolean enabled=true;
+
+    private boolean enabled;
 
 }
