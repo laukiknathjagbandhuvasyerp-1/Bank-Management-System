@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -216,12 +221,14 @@
 
     <form method="post" action="/login">
         <div class="form-group">
-            <input type="text" name="username" placeholder="Username" required " />
+            <input type="text" name="username" placeholder="Username" required />
         </div>
 
         <div class="form-group">
-            <input type="password" name="password" placeholder="Password" required " />
+            <input type="password" name="password" placeholder="Password" required />
         </div>
+
+        <input type="hidden" name="redirect" value="${param.redirect}" >
 
         <button type="submit">Sign In</button>
     </form>

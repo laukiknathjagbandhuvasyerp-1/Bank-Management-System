@@ -18,11 +18,14 @@ import java.util.List;
 @Service
 public class  CustomerUserDetailsServiceImpl implements CustomerUserDetailsService,UserDetailsService {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    // Constructor injection - no @Autowired needed
+    public CustomerUserDetailsServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -32,7 +35,7 @@ public class  CustomerUserDetailsServiceImpl implements CustomerUserDetailsServi
         return org.springframework.security.core.userdetails.User
                 .withUsername(userdb.getUserName())
                 .password(userdb.getPassword())
-                .roles(userdb.getUserRole().replace("ROLE_",""))
+//                .roles(userdb.getUserRole().replace("ROLE_",""))
                 .disabled(!userdb.isEnabled())
                 .build();
     }
@@ -49,7 +52,7 @@ public class  CustomerUserDetailsServiceImpl implements CustomerUserDetailsServi
         userdb.setUserName(username);
         userdb.setPassword(passwordEncoder.encode(password));
 
-        userdb.setUserRole("ROLE_USER");
+//        userdb.setUserRole("ROLE_USER");
         userdb.setEnabled(true);
 
         userRepo.save(userdb);

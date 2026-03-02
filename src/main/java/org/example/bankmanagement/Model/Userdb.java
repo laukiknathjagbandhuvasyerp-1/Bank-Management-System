@@ -17,7 +17,7 @@ public class Userdb {
     @Column(nullable = false)
     private String password;
 
-    private String userRole;
+//    private String userRole;
 
     private boolean enabled;
 
