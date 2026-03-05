@@ -9,11 +9,11 @@ import org.example.bankmanagement.Service.AuthServiceImpl;
 import org.example.bankmanagement.Service.CustomerUserDetailsService;
 import org.example.bankmanagement.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
@@ -44,29 +44,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginPage(AuthRequestDTO authRequestDTO,@RequestParam(required = false) String redirect, HttpServletResponse httpServletResponse){
-        try{
-            AuthResponseDTO authResponseDTO = authService.authenticateUserAndGenerateTokens(authRequestDTO);
-
-            Cookie jwtCookie = new Cookie("jwt",authResponseDTO.getToken());
-            jwtCookie.setHttpOnly(true);
-            jwtCookie.setPath("/");
-            jwtCookie.setMaxAge(60*60);
-
-            httpServletResponse.addCookie(jwtCookie);
-
-
-            if(redirect!= null && !redirect.isEmpty()){
-                return "redirect:" +redirect;
-            }
-
-            return "redirect:/customer/view";
-
-        } catch (Exception e) {
-            return "redirect:/login?error=true";
-        }
-
+    @ResponseBody
+    public ResponseEntity<AuthResponseDTO> loginPage(@RequestBody AuthRequestDTO authRequestDTO){
+            AuthResponseDTO response = authService.authenticateUserAndGenerateTokens(authRequestDTO);
+            return ResponseEntity.ok(response);
     }
-
 
 }

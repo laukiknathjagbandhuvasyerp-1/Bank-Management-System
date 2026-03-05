@@ -219,7 +219,7 @@ response.setDateHeader("Expires", 0);
         <div class="msg">Logged out successfully</div>
     </c:if>
 
-    <form method="post" action="/login">
+    <form onsubmit="login(event)">
         <div class="form-group">
             <input type="text" name="username" placeholder="Username" required />
         </div>
@@ -238,5 +238,46 @@ response.setDateHeader("Expires", 0);
     </div>
 </div>
 
+<script>
+
+function login(event){
+
+    event.preventDefault();
+
+    const username = document.querySelector("input[name='username']").value;
+    const password = document.querySelector("input[name='password']").value;
+
+    fetch("/login",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            username:username,
+            password:password
+        })
+    })
+    .then(res => {
+        if(!res.ok){
+            throw new Error("Invalid login");
+        }
+        return res.json();
+    })
+    .then(data => {
+
+        // store JWT
+        localStorage.setItem("jwt", data.token);
+
+        // redirect
+        window.location.href="/customer/view";
+
+    })
+    .catch(err => {
+        alert("Login failed");
+    });
+
+}
+
+</script>
 </body>
 </html>

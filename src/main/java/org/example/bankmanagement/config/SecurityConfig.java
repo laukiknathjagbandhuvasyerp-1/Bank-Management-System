@@ -27,14 +27,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()
+                )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/signup").permitAll().
-                        requestMatchers("/customer/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/", "/login", "/signup/**","/WEB-INF/**","/css/**","/js/**").permitAll()
+                        .requestMatchers("/customer/view").permitAll()
+                        .requestMatchers("/customer/ajax/**").authenticated()
+                        .requestMatchers("/customer/profile/**").authenticated()
+                        .anyRequest().authenticated()
 
                 )
                 .addFilterBefore(jwtAuthenticationFilter,

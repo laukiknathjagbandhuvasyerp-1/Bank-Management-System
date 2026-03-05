@@ -30,23 +30,35 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-//        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader("Authorization");
 
         String username = null;
         String token = null;
 
-        if(request.getCookies() !=null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    try{
-                        username = jwtUtil.extractUsername(token);
-                    } catch (Exception e) {
-                        System.out.println("Invalid JWT Token");
-                    }
-                }
+        if(authHeader != null && authHeader.startsWith("Bearer ")){
+
+            token = authHeader.substring(7);
+
+            try{
+                username = jwtUtil.extractUsername(token);
+            }catch(Exception e){
+                System.out.println("Invalid Token");
             }
         }
+
+
+//        if(request.getCookies() !=null) {
+//            for (Cookie cookie : request.getCookies()) {
+//                if ("jwt".equals(cookie.getName())) {
+//                    token = cookie.getValue();
+//                    try{
+//                        username = jwtUtil.extractUsername(token);
+//                    } catch (Exception e) {
+//                        System.out.println("Invalid JWT Token");
+//                    }
+//                }
+//            }
+//        }
 
         if(username!=null && SecurityContextHolder.getContext().getAuthentication() == null){
 
@@ -65,5 +77,18 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request,response);
 
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+
+        String path = request.getServletPath();
+
+        return path.equals("/login") ||
+                path.equals("/signup") ||
+                path.equals("/") ||
+                path.startsWith("/css") ||
+                path.equals("/customer/view") ||
+                path.startsWith("/js");
     }
 }
