@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/signup/**","/WEB-INF/**","/css/**","/js/**").permitAll()
                         .requestMatchers("/customer/view").permitAll()
+                        .requestMatchers("/customer/new").permitAll()
                         .requestMatchers("/customer/ajax/**").authenticated()
                         .requestMatchers("/customer/profile/**").authenticated()
                         .anyRequest().authenticated()

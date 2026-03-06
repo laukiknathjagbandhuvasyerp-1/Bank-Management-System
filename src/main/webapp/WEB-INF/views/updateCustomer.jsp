@@ -2,117 +2,202 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update Customer</title>
+<title>Update Customer</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
-        }
+<style>
 
-        .container {
-            width: 450px;
-            margin: 60px auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+body{
+    font-family: Arial;
+    background:#f4f6f8;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+.container{
+    width:450px;
+    margin:60px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+h2{
+    text-align:center;
+    margin-bottom:25px;
+}
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 6px;
-            color: #555;
-        }
+.form-group{
+    margin-bottom:15px;
+}
 
-        input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
 
-        input[disabled] {
-            background-color: #eee;
-            cursor: not-allowed;
-        }
+input{
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
 
-        .actions {
-            margin-top: 25px;
-            display: flex;
-            justify-content: space-between;
-        }
+.actions{
+    margin-top:25px;
+    display:flex;
+    justify-content:space-between;
+}
 
-        .btn {
-            padding: 10px 18px;
-            border-radius: 6px;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            color: white;
-        }
+.btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
 
-        .btn-update {
-            background: #007bff;
-        }
+.btn-update{
+    background:#007bff;
+}
 
-        .btn-cancel {
-            background: #6c757d;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 6px;
-            color: white;
-            display: inline-block;
-        }
-    </style>
+.btn-cancel{
+    background:#6c757d;
+    text-decoration:none;
+    padding:10px 18px;
+}
+
+</style>
 </head>
+
 
 <body>
 
 <div class="container">
-    <h2>Update Customer</h2>
 
-    <form action="/customer/update/${customer.custId}" method="post">
+<h2>Update Customer</h2>
 
-        <!-- Visible but non-editable -->
-        <div class="form-group">
-            <label>Customer ID</label>
-            <input type="text" value="${customer.custId}" disabled />
-        </div>
-
-        <!-- Hidden ID (actual value sent to controller) -->
-        <input type="hidden" name="custId" value="${customer.custId}" />
-
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" name="custName" value="${customer.custName}" required />
-        </div>
-
-        <div class="form-group">
-            <label>Address</label>
-            <input type="text" name="custAdd" value="${customer.custAdd}" required />
-        </div>
-
-        <div class="actions">
-            <button type="submit" class="btn btn-update">Update</button>
-            <a href="/customer/profile/${customer.custId}" class="btn-cancel">Cancel</a>
-        </div>
-
-    </form>
+<div class="form-group">
+<label>Customer ID</label>
+<input type="text" id="custId" value="${customer.custId}" disabled>
 </div>
+
+<div class="form-group">
+<label>Name</label>
+<input type="text" id="custName" value="${customer.custName}">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<input type="text" id="custAdd" value="${customer.custAdd}">
+</div>
+
+<div class="actions">
+<button class="btn btn-update" onclick="updateCustomer()">Update</button>
+
+<button class="btn btn-cancel" onclick="goToProfile()">
+Cancel
+</button>
+</div>
+
+</div>
+
+
+<script>
+
+function getToken(){
+    return localStorage.getItem("jwt");
+}
+
+function updateCustomer(){
+
+    const id = document.getElementById("custId").value;
+    const name = document.getElementById("custName").value;
+    const address = document.getElementById("custAdd").value;
+
+    const token = getToken();
+
+    if(!token){
+        alert("Session expired. Please login again.");
+        window.location.href="/login";
+        return;
+    }
+
+    fetch("/customer/update/" + id,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer " + token
+        },
+        body: JSON.stringify({
+            custName: name,
+            custAdd: address
+        })
+    })
+    .then(response=>{
+
+        if(!response.ok){
+            throw new Error("Update Failed or Access Denied");
+        }
+
+        return response.text();
+    })
+    .then(()=>{
+
+        alert("Customer Updated Successfully");
+
+        return fetch("/customer/profile/" + id,{
+            headers:{
+                "Authorization":"Bearer " + token
+            }
+        });
+
+    })
+    .then(response=>{
+
+        if(!response.ok){
+            throw new Error("Failed to load profile");
+        }
+
+        return response.text();
+    })
+    .then(html=>{
+        document.body.innerHTML = html;
+    })
+    .catch(error=>{
+        console.error(error);
+        alert(error.message);
+    });
+
+}
+
+function goToProfile(){
+    const id = document.getElementById("custId").value;
+    const token = getToken();
+
+    if(!token){
+        alert("Session expired. Please login again.");
+        window.location.href="/login";
+        return;
+    }
+
+    fetch("/customer/profile/" + id, {
+        headers:{
+            "Authorization":"Bearer " + token
+        }
+    })
+    .then(response => {
+        if(!response.ok) throw new Error("Access Denied");
+        return response.text();
+    })
+    .then(html => {
+        document.body.innerHTML = html;
+    })
+    .catch(error => {
+        alert(error.message);
+    });
+}
+
+</script>
 
 </body>
 </html>

@@ -23,7 +23,7 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public String createNewCustomer(@ModelAttribute  CustomerRequestDTO customerRequestDTO){
+    public String createNewCustomer(@RequestBody  CustomerRequestDTO customerRequestDTO){
         CustomerResponseDTO customerResponseDTO = customerService.addNewCustomer(customerRequestDTO);
         long id=customerResponseDTO.getCustId();
         return "redirect:/customer/profile/"+id;
@@ -36,7 +36,7 @@ public class CustomerController {
     }
 
     @PostMapping("/update/{custId}")
-    public String updateCustomerDetailsById(@PathVariable long custId,@ModelAttribute  CustomerRequestDTO customerRequestDTO){
+    public String updateCustomerDetailsById(@PathVariable long custId,@RequestBody  CustomerRequestDTO customerRequestDTO){
           customerService.updateCustomer(custId,customerRequestDTO);
          return "redirect:/customer/profile/"+custId;
     }

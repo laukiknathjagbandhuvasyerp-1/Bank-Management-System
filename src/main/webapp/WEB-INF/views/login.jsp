@@ -269,7 +269,8 @@ function login(event){
         localStorage.setItem("jwt", data.token);
 
         // redirect
-        window.location.href="/customer/view";
+        const redirectUrl = document.querySelector("input[name='redirect']").value;
+        window.location.href = redirectUrl || "/customer/view";
 
     })
     .catch(err => {

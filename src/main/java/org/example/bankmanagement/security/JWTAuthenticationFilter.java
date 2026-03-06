@@ -89,6 +89,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 path.equals("/") ||
                 path.startsWith("/css") ||
                 path.equals("/customer/view") ||
+                path.equals("/customer/new") ||
                 path.startsWith("/js");
     }
 }

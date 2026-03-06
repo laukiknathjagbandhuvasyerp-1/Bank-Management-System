@@ -231,7 +231,10 @@ function viewCustomer(id) {
         return response.text();
       })
       .then(html => {
-        document.body.innerHTML = html;
+        document.open();
+        document.write(html);
+        document.close();
+
       })
       .catch(err => {
         console.error(err);
