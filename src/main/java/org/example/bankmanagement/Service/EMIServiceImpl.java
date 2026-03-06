@@ -9,6 +9,7 @@ import org.example.bankmanagement.Model.EMI;
 import org.example.bankmanagement.Model.Loan;
 import org.example.bankmanagement.Repo.AccountRepo;
 import org.example.bankmanagement.Repo.EMIRepo;
+import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +60,7 @@ public class EMIServiceImpl implements EMIService {
     @Transactional
     @Override
     public String payEmi(long emiId) {
-        EMI emi =eMIRepo.findById(emiId).orElseThrow(()->new RuntimeException("EMI not found"));
+        EMI emi =eMIRepo.findById(emiId).orElseThrow(()->new ResourceNotFoundException("EMI not found"));
 
         Loan loan=emi.getLoan();
         Account account = loan.getCustomer().getAccounts().get(0);
@@ -68,7 +69,7 @@ public class EMIServiceImpl implements EMIService {
         double accBalance=account.getAccBalance();
 
         if(accBalance - emiAmount < 2000){
-            throw new RuntimeException("Insufficient balance as account balance must be 2000");
+            throw new IllegalArgumentException("Insufficient balance as account balance must be 2000");
         }
 
         account.setAccBalance(account.getAccBalance()-emi.getEmiAmount());

@@ -6,6 +6,7 @@ import org.example.bankmanagement.DTO.PageResponseDTO;
 import org.example.bankmanagement.Mapper.PageResponseMapper;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Repo.CustomerRepo;
+import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public void deleteCustomer(long custId) {
-        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("Id not found"));
+        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Id not found"));
         customerRepo.delete(customer);
     }
 
@@ -73,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService{
     public void updateCustomer(long custId,CustomerRequestDTO customerRequestDTO) {
 
         Customer customer = customerRepo.findById(custId).orElseThrow(()->
-        new RuntimeException("Customer Id not found"));
+        new ResourceNotFoundException("Customer Id not found"));
 
         customer.setCustName(customerRequestDTO.getCustName());
         customer.setCustAdd(customerRequestDTO.getCustAdd());
@@ -83,7 +84,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public CustomerResponseDTO findCustomerById(long custId) {
-        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("not found"));
+        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new ResourceNotFoundException("not found"));
 
         CustomerResponseDTO customerResponseDTO= new CustomerResponseDTO();
         customerResponseDTO.setCustId(customer.getCustId());

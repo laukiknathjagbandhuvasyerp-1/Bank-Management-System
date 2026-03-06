@@ -7,6 +7,7 @@ import org.example.bankmanagement.Model.Account;
 import org.example.bankmanagement.Model.Customer;
 import org.example.bankmanagement.Repo.AccountRepo;
 import org.example.bankmanagement.Repo.CustomerRepo;
+import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,7 @@ public class AccoutnServiceImpl implements  AccountService {
 
     @Override
     public Account createAccount(long custId,Account account) {
-       Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("no customer found"));
+       Customer customer = customerRepo.findById(custId).orElseThrow(()-> new ResourceNotFoundException("no customer found"));
        account.setCustomer(customer);
        return accountRepo.save(account);
     }

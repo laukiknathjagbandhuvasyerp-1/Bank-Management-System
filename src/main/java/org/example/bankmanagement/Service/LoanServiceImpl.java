@@ -6,6 +6,7 @@ import org.example.bankmanagement.Model.Loan;
 import org.example.bankmanagement.Repo.AccountRepo;
 import org.example.bankmanagement.Repo.CustomerRepo;
 import org.example.bankmanagement.Repo.LoanRepo;
+import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,15 +37,15 @@ public class LoanServiceImpl implements LoanService{
 
     @Override
     public Loan getLoanByLoanId(long loanId) {
-        return loanRepo.findById(loanId).orElseThrow(()-> new RuntimeException("loan not found"));
+        return loanRepo.findById(loanId).orElseThrow(()-> new ResourceNotFoundException("loan not found"));
     }
 
     @Override
     public Loan createLoan(long custId, Loan loan) {
-        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new RuntimeException("Customer not found"));
+        Customer customer = customerRepo.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Customer not found"));
 
         if(customer.getAccounts()==null || customer.getAccounts().isEmpty()){
-            throw new RuntimeException("Account not found for customer");
+            throw new ResourceNotFoundException("Account not found for customer");
         }
         loan.setCustomer(customer);
 
