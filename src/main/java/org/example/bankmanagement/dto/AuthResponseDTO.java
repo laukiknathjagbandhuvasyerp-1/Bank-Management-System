@@ -1,7 +1,6 @@
-package org.example.bankmanagement.DTO;
+package org.example.bankmanagement.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

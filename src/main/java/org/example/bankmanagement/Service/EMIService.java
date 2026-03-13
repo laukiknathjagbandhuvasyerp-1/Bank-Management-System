@@ -1,11 +1,8 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.DTO.EMIResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.EMI;
-import org.example.bankmanagement.Model.Loan;
-
-import java.util.List;
+import org.example.bankmanagement.dto.EMIResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
+import org.example.bankmanagement.model.Loan;
 
 public interface EMIService {
 

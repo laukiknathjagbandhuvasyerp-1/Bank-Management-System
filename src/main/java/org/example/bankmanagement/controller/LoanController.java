@@ -1,8 +1,8 @@
 package org.example.bankmanagement.controller;
 
-import org.example.bankmanagement.DTO.EMIResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.Loan;
+import org.example.bankmanagement.dto.EMIResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
+import org.example.bankmanagement.model.Loan;
 import org.example.bankmanagement.Service.EMIService;
 import org.example.bankmanagement.Service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;

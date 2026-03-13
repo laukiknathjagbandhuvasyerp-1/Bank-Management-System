@@ -1,4 +1,4 @@
-package org.example.bankmanagement.Model;
+package org.example.bankmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

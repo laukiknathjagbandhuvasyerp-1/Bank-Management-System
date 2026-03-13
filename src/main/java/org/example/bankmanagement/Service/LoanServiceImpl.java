@@ -1,21 +1,15 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.Model.Customer;
-import org.example.bankmanagement.Model.EMI;
-import org.example.bankmanagement.Model.Loan;
-import org.example.bankmanagement.Repo.AccountRepo;
-import org.example.bankmanagement.Repo.CustomerRepo;
-import org.example.bankmanagement.Repo.LoanRepo;
+import org.example.bankmanagement.model.Customer;
+import org.example.bankmanagement.model.Loan;
+import org.example.bankmanagement.repo.CustomerRepo;
+import org.example.bankmanagement.repo.LoanRepo;
 import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 

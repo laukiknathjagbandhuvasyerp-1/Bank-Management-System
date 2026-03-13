@@ -1,19 +1,19 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.DTO.EMIResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Mapper.PageResponseMapper;
-import org.example.bankmanagement.Model.Account;
-import org.example.bankmanagement.Model.Customer;
-import org.example.bankmanagement.Model.EMI;
-import org.example.bankmanagement.Model.Loan;
-import org.example.bankmanagement.Repo.AccountRepo;
-import org.example.bankmanagement.Repo.EMIRepo;
+import org.example.bankmanagement.dto.EMIResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
+import org.example.bankmanagement.mapper.PageResponseMapper;
+import org.example.bankmanagement.model.Account;
+import org.example.bankmanagement.model.EMI;
+import org.example.bankmanagement.model.Loan;
+import org.example.bankmanagement.repo.AccountRepo;
+import org.example.bankmanagement.repo.EMIRepo;
 import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class EMIServiceImpl implements EMIService {
 
-        private static final int PAGE_SIZE=10;
+    private static final int PAGE_SIZE=10;
     private final EMIRepo eMIRepo;
     private final AccountRepo accountRepo;
 
@@ -34,6 +34,7 @@ public class EMIServiceImpl implements EMIService {
         this.accountRepo = accountRepo;
     }
 
+    @Async
     @Override
     public void generateEmi(Loan loan) {
 

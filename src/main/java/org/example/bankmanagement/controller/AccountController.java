@@ -1,14 +1,14 @@
 package org.example.bankmanagement.controller;
 
-import org.example.bankmanagement.DTO.AccountResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.Account;
+import org.example.bankmanagement.dto.AccountResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
+import org.example.bankmanagement.model.Account;
 import org.example.bankmanagement.Service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/account")
-class AccountController {
+class  AccountController {
 
     private final AccountService accountService;
 

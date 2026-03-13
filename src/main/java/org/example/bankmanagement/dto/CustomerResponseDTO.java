@@ -1,4 +1,4 @@
-package org.example.bankmanagement.DTO;
+package org.example.bankmanagement.dto;
 
 import lombok.Data;
 

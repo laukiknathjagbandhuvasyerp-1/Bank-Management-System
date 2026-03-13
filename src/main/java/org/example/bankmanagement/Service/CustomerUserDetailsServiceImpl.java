@@ -1,19 +1,13 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.Model.Userdb;
-import org.example.bankmanagement.Repo.UserRepo;
-import org.example.bankmanagement.config.SecurityConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.bankmanagement.model.Userdb;
+import org.example.bankmanagement.repo.UserRepo;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class  CustomerUserDetailsServiceImpl implements CustomerUserDetailsService,UserDetailsService {

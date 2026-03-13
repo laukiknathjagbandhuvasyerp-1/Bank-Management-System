@@ -1,7 +1,7 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.DTO.AuthRequestDTO;
-import org.example.bankmanagement.DTO.AuthResponseDTO;
+import org.example.bankmanagement.dto.AuthRequestDTO;
+import org.example.bankmanagement.dto.AuthResponseDTO;
 
 public interface AuthService {
 

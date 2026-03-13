@@ -1,9 +1,7 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.Model.Loan;
+import org.example.bankmanagement.model.Loan;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface LoanService {
 

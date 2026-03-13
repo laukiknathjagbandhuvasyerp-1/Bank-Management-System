@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Add New Customer</title>
+<title>Add Account</title>
 <style>
 body {
     margin: 0; padding: 0;
@@ -28,7 +28,7 @@ h2 { text-align: center; margin-bottom: 25px; }
 
 label { display: block; margin-bottom: 6px; font-weight: bold; }
 
-input {
+input, select {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
@@ -36,7 +36,7 @@ input {
     box-sizing: border-box;
 }
 
-input:focus { outline: none; border-color: #667eea; }
+input:focus, select:focus { outline: none; border-color: #667eea; }
 
 .btn {
     width: 100%;
@@ -54,7 +54,7 @@ input:focus { outline: none; border-color: #667eea; }
 
 .back-link { text-align: center; margin-top: 15px; }
 
-.back-link a { text-decoration: none; color: #667eea; }
+.back-link a { text-decoration: none; color: #667eea; cursor: pointer; }
 
 .error-msg {
     color: #c33;
@@ -79,28 +79,34 @@ input:focus { outline: none; border-color: #667eea; }
 </script>
 
 <div class="container">
-    <h2>Add New Customer</h2>
+    <h2>Add Account</h2>
 
     <div class="error-msg" id="errorMsg"></div>
 
     <div class="form-group">
-        <label>Customer Name</label>
-        <input type="text" id="custName" placeholder="Enter customer name">
+        <label>Account Type</label>
+        <select id="accType">
+            <option value="">-- Select Type --</option>
+            <option value="SAVINGS">Savings</option>
+            <option value="CURRENT">Current</option>
+        </select>
     </div>
 
     <div class="form-group">
-        <label>Address</label>
-        <input type="text" id="custAdd" placeholder="Enter customer address">
+        <label>Opening Balance (₹)</label>
+        <input type="number" id="accBalance" placeholder="Enter opening balance" min="0">
     </div>
 
-    <button class="btn" onclick="createCustomer()">Create Customer</button>
+    <button class="btn" onclick="createAccount()">Create Account</button>
 
     <div class="back-link">
-        <a href="/">← Back to Home Page</a>
+        <a onclick="goBack()">← Back to Accounts</a>
     </div>
 </div>
 
 <script>
+
+const custId = "${custId}";
 
 function getToken() { return localStorage.getItem("jwt"); }
 
@@ -121,27 +127,34 @@ function handleResponse(res) {
     return res;
 }
 
-function createCustomer() {
-    const name    = document.getElementById("custName").value.trim();
-    const address = document.getElementById("custAdd").value.trim();
-    const token   = getToken();
+function createAccount() {
+    const accType    = document.getElementById("accType").value;
+    const accBalance = document.getElementById("accBalance").value;
+    const token      = getToken();
 
     if (!token) { window.location.href = "/login"; return; }
-    if (!name)    { showError("Please enter a customer name."); return; }
-    if (!address) { showError("Please enter an address."); return; }
+    if (!accType)                      { showError("Please select an account type."); return; }
+    if (!accBalance || accBalance < 0) { showError("Please enter a valid balance."); return; }
 
-    fetch("/customer/add", {
+    fetch("/account/customer/" + custId, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-        body: JSON.stringify({ custName: name, custAdd: address })
+        body: JSON.stringify({ accType: accType, accBalance: parseFloat(accBalance) })
     })
     .then(res => handleResponse(res))
-    .then(res => res.text())
+    .then(res => res.json())
     .then(() => {
-        alert("Customer created successfully!");
-        window.location.href = "/customer/view";
+        alert("Account created successfully!");
+        goBack();
     })
     .catch(err => { if (err.message !== "Unauthorized") showError(err.message); });
+}
+
+function goBack() {
+    const token = getToken();
+    if (!token) { window.location.href = "/login"; return; }
+
+    window.location.href = "/customer/accounts/" + custId;
 }
 </script>
 </body>

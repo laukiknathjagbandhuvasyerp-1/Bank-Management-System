@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Add New Customer</title>
+<title>Apply for Loan</title>
 <style>
 body {
     margin: 0; padding: 0;
@@ -54,7 +54,7 @@ input:focus { outline: none; border-color: #667eea; }
 
 .back-link { text-align: center; margin-top: 15px; }
 
-.back-link a { text-decoration: none; color: #667eea; }
+.back-link a { text-decoration: none; color: #667eea; cursor: pointer; }
 
 .error-msg {
     color: #c33;
@@ -79,28 +79,35 @@ input:focus { outline: none; border-color: #667eea; }
 </script>
 
 <div class="container">
-    <h2>Add New Customer</h2>
+    <h2>Apply for Loan</h2>
 
     <div class="error-msg" id="errorMsg"></div>
 
     <div class="form-group">
-        <label>Customer Name</label>
-        <input type="text" id="custName" placeholder="Enter customer name">
+        <label>Loan Amount (₹)</label>
+        <input type="number" id="loanAmount" placeholder="Enter loan amount" min="1">
     </div>
 
     <div class="form-group">
-        <label>Address</label>
-        <input type="text" id="custAdd" placeholder="Enter customer address">
+        <label>Interest Rate (%)</label>
+        <input type="number" id="loanRate" placeholder="e.g. 8.5" step="0.1" min="0">
     </div>
 
-    <button class="btn" onclick="createCustomer()">Create Customer</button>
+    <div class="form-group">
+        <label>Tenure (months)</label>
+        <input type="number" id="loanTenure" placeholder="e.g. 12" min="1">
+    </div>
+
+    <button class="btn" onclick="applyLoan()">Apply Loan</button>
 
     <div class="back-link">
-        <a href="/">← Back to Home Page</a>
+        <a onclick="goBack()">← Back to Loans</a>
     </div>
 </div>
 
 <script>
+
+const custId = "${custId}";
 
 function getToken() { return localStorage.getItem("jwt"); }
 
@@ -121,27 +128,40 @@ function handleResponse(res) {
     return res;
 }
 
-function createCustomer() {
-    const name    = document.getElementById("custName").value.trim();
-    const address = document.getElementById("custAdd").value.trim();
-    const token   = getToken();
+function applyLoan() {
+    const loanAmount = document.getElementById("loanAmount").value;
+    const loanRate   = document.getElementById("loanRate").value;
+    const loanTenure = document.getElementById("loanTenure").value;
+    const token      = getToken();
 
     if (!token) { window.location.href = "/login"; return; }
-    if (!name)    { showError("Please enter a customer name."); return; }
-    if (!address) { showError("Please enter an address."); return; }
+    if (!loanAmount || loanAmount <= 0) { showError("Please enter a valid loan amount."); return; }
+    if (!loanRate   || loanRate < 0)    { showError("Please enter a valid interest rate."); return; }
+    if (!loanTenure || loanTenure < 1)  { showError("Please enter a valid tenure."); return; }
 
-    fetch("/customer/add", {
+    fetch("/loan/customer/" + custId, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-        body: JSON.stringify({ custName: name, custAdd: address })
+        body: JSON.stringify({
+            loanAmount: parseInt(loanAmount),
+            loanRate:   parseFloat(loanRate),
+            loanTenure: parseInt(loanTenure)
+        })
     })
     .then(res => handleResponse(res))
-    .then(res => res.text())
+    .then(res => res.json())
     .then(() => {
-        alert("Customer created successfully!");
-        window.location.href = "/customer/view";
+        alert("Loan applied successfully! EMIs have been generated.");
+        goBack();
     })
     .catch(err => { if (err.message !== "Unauthorized") showError(err.message); });
+}
+
+function goBack() {
+    const token = getToken();
+    if (!token) { window.location.href = "/login"; return; }
+
+    window.location.href = "/customer/loans/"    + custId;
 }
 </script>
 </body>

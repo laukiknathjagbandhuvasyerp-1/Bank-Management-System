@@ -1,6 +1,5 @@
-package org.example.bankmanagement.DTO;
+package org.example.bankmanagement.dto;
 
-import jakarta.annotation.Nonnull;
 import lombok.Data;
 
 

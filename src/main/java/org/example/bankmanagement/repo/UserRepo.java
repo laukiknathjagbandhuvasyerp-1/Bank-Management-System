@@ -1,6 +1,6 @@
-package org.example.bankmanagement.Repo;
+package org.example.bankmanagement.repo;
 
-import org.example.bankmanagement.Model.Userdb;
+import org.example.bankmanagement.model.Userdb;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

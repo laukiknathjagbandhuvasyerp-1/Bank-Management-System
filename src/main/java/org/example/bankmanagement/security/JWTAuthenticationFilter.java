@@ -90,6 +90,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 path.startsWith("/css") ||
                 path.equals("/customer/view") ||
                 path.equals("/customer/new") ||
-                path.startsWith("/js");
+                path.startsWith("/js") ||
+                path.startsWith("/customer/edit") ||
+                path.startsWith("/customer/profile") ||
+                path.startsWith("/customer/accounts") ||
+                path.startsWith("/customer/loans") ||
+                path.startsWith("/account/new") ||
+                path.startsWith("/loan/new") ||
+                path.startsWith("/loan/emi/view");
     }
 }

@@ -1,12 +1,8 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.DTO.CustomerRequestDTO;
-import org.example.bankmanagement.DTO.CustomerResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Model.Customer;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
+import org.example.bankmanagement.dto.CustomerRequestDTO;
+import org.example.bankmanagement.dto.CustomerResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
 
 public interface CustomerService {
 

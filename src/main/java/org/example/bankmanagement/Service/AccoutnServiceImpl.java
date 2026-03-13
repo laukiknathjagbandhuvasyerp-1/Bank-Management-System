@@ -1,21 +1,18 @@
 package org.example.bankmanagement.Service;
 
-import org.example.bankmanagement.DTO.AccountResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
-import org.example.bankmanagement.Mapper.PageResponseMapper;
-import org.example.bankmanagement.Model.Account;
-import org.example.bankmanagement.Model.Customer;
-import org.example.bankmanagement.Repo.AccountRepo;
-import org.example.bankmanagement.Repo.CustomerRepo;
+import org.example.bankmanagement.dto.AccountResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
+import org.example.bankmanagement.mapper.PageResponseMapper;
+import org.example.bankmanagement.model.Account;
+import org.example.bankmanagement.model.Customer;
+import org.example.bankmanagement.repo.AccountRepo;
+import org.example.bankmanagement.repo.CustomerRepo;
 import org.example.bankmanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 

@@ -1,15 +1,14 @@
 package org.example.bankmanagement.controller;
 
-import org.example.bankmanagement.DTO.CustomerRequestDTO;
-import org.example.bankmanagement.DTO.CustomerResponseDTO;
-import org.example.bankmanagement.DTO.PageResponseDTO;
+import org.example.bankmanagement.dto.CustomerRequestDTO;
+import org.example.bankmanagement.dto.CustomerResponseDTO;
+import org.example.bankmanagement.dto.PageResponseDTO;
 import org.example.bankmanagement.Service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -76,6 +75,18 @@ public class CustomerController {
         CustomerResponseDTO customerResponseDTO = customerService.findCustomerById(custId);
         model.addAttribute("customer",customerResponseDTO);
         return "updateCustomer";
+    }
+
+    @GetMapping("/accounts/{custId}")
+    public String openAccountsPage(@PathVariable long custId, Model model) {
+        model.addAttribute("custId", custId);
+        return "accountList";
+    }
+
+    @GetMapping("/loans/{custId}")
+    public String openLoansPage(@PathVariable long custId, Model model) {
+        model.addAttribute("custId", custId);
+        return "loanList";
     }
 
 }
